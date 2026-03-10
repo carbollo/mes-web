@@ -1,0 +1,13 @@
+{
+  "name": "mes-web",
+  "version": "1.0.0",
+  "description": "Landing ME's Marketing Experts preparada para desplegar en Railway",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT"
+}
+
