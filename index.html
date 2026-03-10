@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ME's Marketing Experts Studio | Marketing para Reformas en Málaga</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,600;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --black: #080808;
+      --dark: #111111;
+      --card: #161616;
+      --border: #2a2a2a;
+      --gold: #C8A96E;
+      --gold-light: #E8C98E;
+      --white: #FAFAFA;
+      --muted: #888888;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.5;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.4rem 5%;
+      background: rgba(8,8,8,0.85);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(200,169,110,0.12);
+      transition: padding 0.3s;
+    }
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 0.12em;
+      color: var(--gold);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--white); }
+    .nav-links { display: flex; gap: 2.4rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-cta {
+      background: var(--gold) !important;
+      color: var(--black) !important;
+      padding: 0.6rem 1.4rem;
+      font-weight: 600 !important;
+      border-radius: 2px;
+    }
+    .nav-cta:hover { background: var(--gold-light) !important; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .hamburger span { width: 24px; height: 1.5px; background: var(--white); display: block; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      padding: 0 5%;
+      padding-top: 90px;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 70% 50%, rgba(200,169,110,0.08) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 40% at 20% 80%, rgba(200,169,110,0.05) 0%, transparent 60%),
+        var(--black);
+    }
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(200,169,110,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(200,169,110,0.04) 1px, transparent 1px);
+      background-size: 80px 80px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 80%);
+    }
+    .hero-inner { position: relative; z-index: 2; max-width: 780px; }
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.8rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.1s ease forwards;
+    }
+    .hero-eyebrow::before { content: ''; width: 32px; height: 1px; background: var(--gold); }
+    h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.8rem, 6vw, 5.2rem);
+      line-height: 1.05;
+      font-weight: 400;
+      color: var(--white);
+      margin-bottom: 1.6rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.2s ease forwards;
+    }
+    h1 em { font-style: italic; color: var(--gold); }
+    .hero-desc {
+      font-size: 1.1rem;
+      color: var(--muted);
+      line-height: 1.75;
+      max-width: 540px;
+      margin-bottom: 2.8rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.35s ease forwards;
+    }
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.4rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.5s ease forwards;
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--gold);
+      color: var(--black);
+      padding: 1rem 2.2rem;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-primary:hover {
+      background: var(--gold-light);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(200,169,110,0.25);
+    }
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--muted);
+      font-size: 0.85rem;
+      letter-spacing: 0.06em;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .btn-ghost:hover { color: var(--white); }
+    .hero-badge {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 5%;
+      font-size: 0.72rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      letter-spacing: 0.06em;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.7s ease forwards;
+    }
+    .hero-badge::before { content: '✓'; color: var(--gold); }
+
+    /* ── STATS ── */
+    .stats-strip {
+      background: var(--card);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 2.5rem 5%;
+      display: flex;
+      justify-content: center;
+    }
+    .stat-item {
+      flex: 1;
+      max-width: 200px;
+      text-align: center;
+      padding: 0 2rem;
+      border-right: 1px solid var(--border);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3rem;
+      color: var(--gold);
+      letter-spacing: 0.04em;
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-top: 0.3rem;
+    }
+
+    /* ── SECTIONS ── */
+    section { padding: 7rem 5%; }
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 1rem;
+    }
+    .section-label::before { content: ''; width: 24px; height: 1px; background: var(--gold); }
+    h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      font-weight: 400;
+      line-height: 1.15;
+      color: var(--white);
+      margin-bottom: 1rem;
+    }
+    h2 em { font-style: italic; color: var(--gold); }
+    .section-intro {
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.75;
+      max-width: 520px;
+      margin-bottom: 4rem;
+    }
+
+    /* ── MÉTODO ── */
+    #metodo { background: var(--dark); }
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+    .step-card {
+      background: var(--card);
+      padding: 3rem 2.4rem;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+    .step-card:hover { background: #1c1c1c; }
+    .step-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      transform: scaleX(0);
+      transition: transform 0.4s;
+    }
+    .step-card:hover::before { transform: scaleX(1); }
+    .step-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 5rem;
+      color: rgba(200,169,110,0.1);
+      line-height: 1;
+      position: absolute;
+      top: 1.2rem; right: 1.8rem;
+    }
+    .step-icon {
+      width: 44px; height: 44px;
+      border: 1px solid rgba(200,169,110,0.3);
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.6rem;
+      font-size: 1.2rem;
+    }
+    .step-card h3 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.4rem;
+      font-weight: 400;
+      color: var(--white);
+      margin-bottom: 0.8rem;
+    }
+    .step-card p { color: var(--muted); font-size: 0.9rem; line-height: 1.7; }
+
+    /* ── COMPARATIVA ── */
+    #comparativa { background: var(--black); }
+    .compare-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; min-width: 560px; }
+    thead th {
+      padding: 1.2rem 1.6rem;
+      text-align: left;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+    }
+    thead th:last-child { color: var(--gold); background: rgba(200,169,110,0.04); }
+    tbody tr { border-bottom: 1px solid rgba(42,42,42,0.5); transition: background 0.2s; }
+    tbody tr:hover { background: rgba(255,255,255,0.02); }
+    tbody td { padding: 1.1rem 1.6rem; font-size: 0.9rem; color: var(--muted); }
+    tbody td:first-child { color: var(--white); font-weight: 600; }
+    tbody td:last-child { background: rgba(200,169,110,0.04); color: var(--gold); font-weight: 600; }
+
+    /* ── SERVICIOS ── */
+    #servicios { background: var(--dark); }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+    .service-card {
+      background: var(--card);
+      padding: 2.8rem 2.2rem;
+      transition: background 0.3s;
+    }
+    .service-card:hover { background: #1c1c1c; }
+    .service-icon { font-size: 1.8rem; margin-bottom: 1.4rem; display: block; }
+    .service-card h3 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.3rem;
+      font-weight: 400;
+      color: var(--white);
+      margin-bottom: 0.8rem;
+    }
+    .service-card p { color: var(--muted); font-size: 0.88rem; line-height: 1.7; }
+    .service-tag {
+      display: inline-block;
+      margin-top: 1.4rem;
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid rgba(200,169,110,0.25);
+      padding: 0.25rem 0.7rem;
+      border-radius: 1px;
+    }
+
+    /* ── EQUIPO ── */
+    #equipo { background: var(--black); }
+    .team-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+    .team-text p { color: var(--muted); line-height: 1.8; font-size: 0.95rem; margin-bottom: 1.4rem; }
+    .team-perks { list-style: none; margin: 2rem 0 2.5rem; }
+    .team-perks li {
+      padding: 0.8rem 0;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: flex-start;
+      gap: 0.8rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+    .team-perks li::before { content: '→'; color: var(--gold); flex-shrink: 0; margin-top: 1px; }
+    .team-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+    }
+    .team-card { background: var(--card); padding: 2.2rem; text-align: center; }
+    .team-avatar-placeholder {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      border: 2px solid rgba(200,169,110,0.3);
+      margin: 0 auto 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      background: var(--border);
+    }
+    .team-name { font-family: 'DM Serif Display', serif; font-size: 1rem; color: var(--white); margin-bottom: 0.3rem; }
+    .team-role { font-size: 0.72rem; color: var(--gold); letter-spacing: 0.1em; text-transform: uppercase; }
+    .team-stat {
+      background: var(--card);
+      padding: 2.2rem;
+      text-align: center;
+      grid-column: span 2;
+      border-top: 1px solid var(--border);
+    }
+    .team-stat .big { font-family: 'Bebas Neue', sans-serif; font-size: 3.5rem; color: var(--gold); line-height: 1; }
+    .team-stat .lbl { font-size: 0.78rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+
+    /* ── CTA ── */
+    .cta-section {
+      background: var(--card);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 7rem 5%;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(200,169,110,0.07) 0%, transparent 70%);
+    }
+    .cta-section h2 { max-width: 680px; margin: 0 auto 1.2rem; position: relative; }
+    .cta-section p { color: var(--muted); margin-bottom: 2.8rem; position: relative; }
+    .cta-actions {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1.4rem;
+      flex-wrap: wrap;
+      position: relative;
+    }
+    .cta-note {
+      margin-top: 1.2rem;
+      font-size: 0.75rem;
+      color: var(--muted);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+    }
+    .cta-note::before { content: '↓'; color: var(--gold); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--black);
+      padding: 5rem 5% 2.5rem;
+      border-top: 1px solid var(--border);
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr 1fr 1fr;
+      gap: 4rem;
+      margin-bottom: 4rem;
+    }
+    .footer-brand p { color: var(--muted); font-size: 0.85rem; line-height: 1.75; margin-top: 1rem; }
+    .footer-col h4 { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.2rem; }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 0.6rem; }
+    .footer-col ul li a,
+    .footer-col ul li span {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: color 0.2s;
+      display: block;
+    }
+    .footer-col ul li a:hover { color: var(--gold); }
+    .footer-bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .footer-bottom p { color: #444; font-size: 0.78rem; }
+    .footer-bottom a { color: #444; text-decoration: none; }
+    .footer-bottom a:hover { color: var(--gold); }
+
+    /* ── REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── WHATSAPP ── */
+    .wa-float {
+      position: fixed;
+      bottom: 2rem; right: 2rem;
+      z-index: 200;
+      background: #25D366;
+      width: 54px; height: 54px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      box-shadow: 0 4px 20px rgba(37,211,102,0.35);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .wa-float:hover { transform: scale(1.08); box-shadow: 0 6px 28px rgba(37,211,102,0.5); }
+
+    /* ── MOBILE ── */
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .steps-grid, .services-grid { grid-template-columns: 1fr; }
+      .team-layout { grid-template-columns: 1fr; gap: 3rem; }
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
+      .stats-strip { flex-wrap: wrap; }
+      .stat-item { border-right: none; padding: 1rem; }
+    }
+    @media (max-width: 600px) {
+      h1 { font-size: 2.4rem; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .team-cards { grid-template-columns: 1fr; }
+      .team-stat { grid-column: span 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <a href="#" class="nav-logo">ME'S<span> Studio</span></a>
+    <ul class="nav-links">
+      <li><a href="#metodo">Método</a></li>
+      <li><a href="#comparativa">Diferencia</a></li>
+      <li><a href="#servicios">Servicios</a></li>
+      <li><a href="#equipo">Equipo</a></li>
+      <li><a href="https://wa.me/34614851435" class="nav-cta">Agendar Llamada</a></li>
+    </ul>
+    <div class="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="inicio">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-inner">
+      <div class="hero-eyebrow">Especialistas en Reformas · Málaga</div>
+      <h1>¿Quieres más clientes para tu empresa de <em>reformas?</em></h1>
+      <p class="hero-desc">Ayudamos a empresas de aluminio, cristalería y cerrajería en Málaga a conseguir presupuestos cualificados cada semana mediante nuestro sistema de Funnels de Venta.</p>
+      <div class="hero-actions">
+        <a href="https://wa.me/34614851435" class="btn-primary">Agenda tu llamada gratuita →</a>
+        <a href="#metodo" class="btn-ghost">Ver cómo funciona ↓</a>
+      </div>
+    </div>
+    <div class="hero-badge">Sin compromiso · Respuesta en 24h</div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats-strip">
+    <div class="stat-item"><div class="stat-num">+50</div><div class="stat-label">Campañas exitosas</div></div>
+    <div class="stat-item"><div class="stat-num">3×</div><div class="stat-label">ROI promedio</div></div>
+    <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">Leads cualificados</div></div>
+    <div class="stat-item"><div class="stat-num">48h</div><div class="stat-label">Para ver resultados</div></div>
+  </div>
+
+  <!-- MÉTODO -->
+  <section id="metodo">
+    <div class="section-label">Nuestro sistema</div>
+    <h2>Sistema de 3 pasos para <em>escalar</em></h2>
+    <p class="section-intro">Olvídate de perseguir clientes. Hacemos que los clientes te busquen a ti con un sistema probado y automatizado.</p>
+    <div class="steps-grid reveal">
+      <div class="step-card">
+        <div class="step-num">01</div>
+        <div class="step-icon">📡</div>
+        <h3>Publicidad Estratégica</h3>
+        <p>Lanzamos campañas en Meta y Google dirigidas específicamente a personas en Málaga buscando reformas activamente. Ni un euro desperdiciado.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">02</div>
+        <div class="step-icon">⚙️</div>
+        <h3>Funnels Automatizados</h3>
+        <p>No más curiosos. Nuestro sistema filtra a los interesados para asegurar que tienen presupuesto y necesidad real antes de llegar a ti.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">03</div>
+        <div class="step-icon">🎯</div>
+        <h3>Leads Cualificados</h3>
+        <p>Recibes contactos listos para pedir presupuesto directamente en tu teléfono o CRM cada día. Solo hablas con quien está listo para contratar.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARATIVA -->
+  <section id="comparativa">
+    <div class="section-label">Por qué elegirnos</div>
+    <h2>Deja de perder dinero con agencias <em>generalistas</em></h2>
+    <p class="section-intro">Conocemos el sector de las reformas y aluminio porque nos dedicamos exclusivamente a ello. La diferencia se nota.</p>
+    <div class="compare-wrap reveal">
+      <table>
+        <thead>
+          <tr>
+            <th>Característica</th>
+            <th>Otras Agencias</th>
+            <th>ME's Studio</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Especialización</td><td>Generalistas (hacen de todo)</td><td>✦ 100% Reformas, Aluminio &amp; Cristal</td></tr>
+          <tr><td>Tipo de contactos</td><td>Leads fríos / Curiosos</td><td>✦ Cualificados con presupuesto real</td></tr>
+          <tr><td>Enfoque principal</td><td>Likes y seguidores</td><td>✦ Ventas y cierres</td></tr>
+          <tr><td>Reportes</td><td>Genéricos y confusos</td><td>✦ Claros — coste por cliente</td></tr>
+          <tr><td>Garantía</td><td>Ninguna</td><td>✦ Resultados o te devolvemos el tiempo</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- SERVICIOS -->
+  <section id="servicios">
+    <div class="section-label">Lo que hacemos</div>
+    <h2>Nuestros <em>servicios</em></h2>
+    <p class="section-intro">Un ecosistema digital completo diseñado para convertir visitas en clientes y clientes en contratos.</p>
+    <div class="services-grid reveal">
+      <div class="service-card">
+        <span class="service-icon">📣</span>
+        <h3>Publicidad Meta &amp; Google</h3>
+        <p>Campañas de alto rendimiento diseñadas para captar a propietarios que necesitan reformas ahora mismo en tu área de Málaga.</p>
+        <span class="service-tag">Ads Manager</span>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">🔄</span>
+        <h3>Funnels de Venta</h3>
+        <p>Creamos el ecosistema digital completo: landing pages, emails y automatizaciones para convertir visitas en clientes.</p>
+        <span class="service-tag">Automatización</span>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">📋</span>
+        <h3>Gestión de CRM</h3>
+        <p>Te ayudamos a organizar y gestionar tus leads para que ninguna oportunidad de venta se pierda en el proceso.</p>
+        <span class="service-tag">CRM Setup</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- EQUIPO -->
+  <section id="equipo">
+    <div class="team-layout">
+      <div class="team-text">
+        <div class="section-label">El equipo</div>
+        <h2>Expertos en marketing para el sector <em>construcción</em></h2>
+        <p>En ME's Marketing Experts Studio no somos generalistas. Conocemos el sector de las reformas, el aluminio y la cristalería porque nos dedicamos exclusivamente a ello.</p>
+        <p>Entendemos lo que tus clientes buscan y sabemos cómo alcanzarlos antes que tu competencia.</p>
+        <ul class="team-perks">
+          <li>Estrategia personalizada adaptada a tu localidad en Málaga</li>
+          <li>Reportes claros — sabrás exactamente cuánto te cuesta cada cliente</li>
+          <li>Comunicación directa, sin intermediarios ni burocracia</li>
+        </ul>
+        <a href="https://wa.me/34614851435" class="btn-primary">Hablar con el equipo →</a>
+      </div>
+      <div class="reveal">
+        <div class="team-cards">
+          <div class="team-card">
+            <div class="team-avatar-placeholder">👤</div>
+            <div class="team-name">Especialista</div>
+            <div class="team-role">Funnels &amp; Automatización</div>
+          </div>
+          <div class="team-card">
+            <div class="team-avatar-placeholder">👤</div>
+            <div class="team-name">Especialista</div>
+            <div class="team-role">Meta &amp; Google Ads</div>
+          </div>
+          <div class="team-stat">
+            <div class="big">+50</div>
+            <div class="lbl">Campañas Exitosas en Reformas</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section" id="contacto">
+    <h2>¿Listo para llenar tu agenda de <em>presupuestos?</em></h2>
+    <p>Deja de depender del boca a boca. Toma el control del crecimiento de tu empresa hoy mismo.</p>
+    <div class="cta-actions">
+      <a href="https://wa.me/34614851435" class="btn-primary">Quiero mi llamada gratuita →</a>
+    </div>
+    <div class="cta-note">Respuesta en menos de 24h laborables · Sin compromiso</div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:0.12em;color:var(--gold)">ME'S <span style="color:var(--white)">STUDIO</span></div>
+        <p>Expertos en marketing digital para empresas de reformas, aluminio y cristalería en Málaga.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Contacto</h4>
+        <ul>
+          <li><span>📍 Málaga, España</span></li>
+          <li><a href="tel:614851435">📞 614 851 435</a></li>
+          <li><a href="mailto:marketingexpertsstudio@gmail.com">✉ marketingexpertsstudio@gmail.com</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Navegación</h4>
+        <ul>
+          <li><a href="#metodo">Método</a></li>
+          <li><a href="#comparativa">Diferencia</a></li>
+          <li><a href="#servicios">Servicios</a></li>
+          <li><a href="#equipo">Equipo</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Horario</h4>
+        <ul>
+          <li><span>Lunes – Viernes</span></li>
+          <li><span>9:00 – 18:00</span></li>
+          <li style="margin-top:0.6rem"><a href="https://wa.me/34614851435" style="color:var(--gold)">WhatsApp disponible →</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2024 ME's Marketing Experts Studio. Todos los derechos reservados.</p>
+      <p><a href="#">Política de privacidad</a></p>
+    </div>
+  </footer>
+
+  <!-- WhatsApp Float -->
+  <a href="https://wa.me/34614851435" class="wa-float" title="WhatsApp">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+      <path d="M12 0C5.373 0 0 5.373 0 12c0 2.136.564 4.14 1.545 5.876L.057 23.5l5.773-1.513A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.651-.502-5.177-1.381l-.371-.22-3.427.898.916-3.338-.241-.385A9.944 9.944 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
+    </svg>
+  </a>
+
+  <script>
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Navbar shrink
+    window.addEventListener('scroll', () => {
+      document.getElementById('navbar').style.padding =
+        window.scrollY > 60 ? '0.9rem 5%' : '1.4rem 5%';
+    });
+
+    // Mobile menu
+    function toggleMenu() {
+      const links = document.querySelector('.nav-links');
+      const open = links.classList.toggle('mobile-open');
+      if (open) {
+        Object.assign(links.style, {
+          display: 'flex', flexDirection: 'column',
+          position: 'absolute', top: '70px', left: '0', right: '0',
+          background: 'rgba(8,8,8,0.97)', padding: '1.5rem 5%',
+          gap: '1.2rem', borderBottom: '1px solid #2a2a2a'
+        });
+      } else {
+        links.style.display = 'none';
+      }
+    }
+  </script>
+</body>
+</html>
