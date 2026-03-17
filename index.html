@@ -260,6 +260,22 @@
       max-width: 520px;
       margin-bottom: 4rem;
     }
+    .section-intro--highlight {
+      position: relative;
+      margin-top: 0.6rem;
+      padding-top: 1.4rem;
+      font-weight: 400;
+      color: var(--white);
+    }
+    .section-intro--highlight::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 64px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+    }
 
     /* ── MÉTODO ── */
     #metodo { background: var(--dark); }
@@ -317,6 +333,47 @@
 
     /* ── COMPARATIVA ── */
     #comparativa { background: var(--black); }
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.8rem;
+      margin-bottom: 3.5rem;
+      margin-top: 1.8rem;
+    }
+    .pillar-item {
+      background: radial-gradient(circle at top left, rgba(200,169,110,0.08), transparent 55%);
+      border: 1px solid rgba(200,169,110,0.2);
+      border-radius: 6px;
+      padding: 1.6rem 1.8rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .pillar-item::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-top: 1px solid rgba(200,169,110,0.3);
+      opacity: 0.6;
+      pointer-events: none;
+    }
+    .pillar-kicker {
+      font-size: 0.7rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.6rem;
+    }
+    .pillar-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.2rem;
+      color: var(--white);
+      margin-bottom: 0.4rem;
+    }
+    .pillar-text {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
     .compare-wrap { overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; min-width: 560px; }
     thead th {
@@ -339,14 +396,14 @@
     #servicios { background: var(--dark); }
     .services-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 1px;
       background: var(--border);
       border: 1px solid var(--border);
     }
     .service-card {
       background: var(--card);
-      padding: 2.8rem 2.2rem;
+      padding: 2.4rem 2rem;
       transition: background 0.3s;
     }
     .service-card:hover { background: #1c1c1c; }
@@ -397,9 +454,19 @@
       gap: 1px;
       background: var(--border);
     }
-    .team-card { background: var(--card); padding: 2.2rem; text-align: center; }
+    .team-card {
+      background: var(--card);
+      padding: 2.2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .team-card:hover {
+      background: #1c1c1c;
+      transform: translateY(-2px);
+    }
     .team-avatar-placeholder {
-      width: 80px; height: 80px;
+      width: 110px; height: 110px;
       border-radius: 50%;
       border: 2px solid rgba(200,169,110,0.3);
       margin: 0 auto 1rem;
@@ -408,6 +475,20 @@
       justify-content: center;
       font-size: 1.8rem;
       background: var(--border);
+      overflow: hidden;
+    }
+    .team-avatar-placeholder img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+    .team-avatar--diego {
+      background-image: url("assets/foto-diego.jpg");
+      background-size: cover;
+      background-position: center top;
+      background-repeat: no-repeat;
     }
     .team-name { font-family: 'DM Serif Display', serif; font-size: 1rem; color: var(--white); margin-bottom: 0.3rem; }
     .team-role { font-size: 0.72rem; color: var(--gold); letter-spacing: 0.1em; text-transform: uppercase; }
@@ -420,6 +501,99 @@
     }
     .team-stat .big { font-family: 'Bebas Neue', sans-serif; font-size: 3.5rem; color: var(--gold); line-height: 1; }
     .team-stat .lbl { font-size: 0.78rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+
+    /* ── TEAM MODALS ── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      backdrop-filter: blur(10px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 300;
+      opacity: 0;
+      transition: opacity 0.25s ease-out;
+    }
+    .modal-overlay.active {
+      display: flex;
+      opacity: 1;
+    }
+    .modal-card {
+      background: #151515;
+      border-radius: 8px;
+      border: 1px solid rgba(200,169,110,0.35);
+      max-width: 520px;
+      width: 90%;
+      padding: 2.2rem 2.4rem;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.8);
+      position: relative;
+      opacity: 0;
+      transform: scale(0.6);
+      transform-origin: center center;
+    }
+    .modal-overlay.active .modal-card {
+      animation: modalPop 260ms cubic-bezier(0.19, 1, 0.22, 1) forwards;
+    }
+    #modal-ricardo .modal-card { transform-origin: 25% 25%; }
+    #modal-diego .modal-card { transform-origin: 75% 25%; }
+
+    @keyframes modalPop {
+      0% {
+        opacity: 0;
+        transform: scale(0.6) translateY(10px);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+    .modal-close {
+      position: absolute;
+      top: 0.9rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 1.3rem;
+      cursor: pointer;
+    }
+    .modal-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.5rem;
+      margin-bottom: 0.3rem;
+      color: var(--white);
+    }
+    .modal-subtitle {
+      font-size: 0.82rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.2rem;
+    }
+    .modal-body {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 1.4rem;
+    }
+    .modal-list {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    .modal-list li {
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .modal-list li::before {
+      content: '•';
+      color: var(--gold);
+    }
 
     /* ── CTA ── */
     .cta-section {
@@ -568,20 +742,12 @@
       <h1>Transformamos tu inversión en resultados.</h1>
       <p class="hero-desc">Agencia de marketing estratégico, publicidad digital y producción audiovisual de alto impacto. No solo generamos ruido; construimos sistemas de captación de clientes..</p>
       <div class="hero-actions">
-        <a href="https://wa.me/34614851435" class="btn-primary">Agenda tu llamada gratuita →</a>
-        <a href="#metodo" class="btn-ghost">Ver cómo funciona ↓</a>
+        <a href="https://wa.me/34614851435" class="btn-primary">Reserva tu Auditoría Estratégica →</a>
+        <a href="#metodo" class="btn-ghost">Ver Portafolio Audiovisual ↓</a>
       </div>
     </div>
     <div class="hero-badge">Sin compromiso · Respuesta en 24h</div>
   </section>
-
-  <!-- STATS -->
-  <div class="stats-strip">
-    <div class="stat-item"><div class="stat-num">+50</div><div class="stat-label">Campañas exitosas</div></div>
-    <div class="stat-item"><div class="stat-num">3×</div><div class="stat-label">ROI promedio</div></div>
-    <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">Leads cualificados</div></div>
-    <div class="stat-item"><div class="stat-num">48h</div><div class="stat-label">Para ver resultados</div></div>
-  </div>
 
   <!-- MÉTODO -->
   <section id="metodo">
@@ -610,23 +776,42 @@
   <!-- COMPARATIVA -->
   <section id="comparativa">
     <div class="section-label">Por qué elegirnos</div>
-    <h2>Deja de perder dinero con agencias <em>generalistas</em></h2>
-    <p class="section-intro">Conocemos el sector de las reformas y aluminio porque nos dedicamos exclusivamente a ello. La diferencia se nota.</p>
+    <h2>Invierte en garantia de exito. <em>Somos expertos en crecimiento</em></h2>
+    <p class="section-intro">Con más de 2 años de xp llenando las agendas de nuestros clientes con leads cualificados. En ME's Marketing Experts Studio, nos alejamos de las soluciones estándar y los servicios "en serie". Entendemos que cada negocio tiene un ADN único, por lo que nos convertimos en tu departamento de marketing.</p>
+    <p class="section-intro section-intro--highlight">Entendemos lo que tus clientes potenciales buscan y sabemos cómo posicionar tu marca para alcanzarlos antes que tu competencia, con una estrategia basada en tres pilares innegociables:</p>
+    <div class="pillars-grid">
+      <div class="pillar-item">
+        <div class="pillar-kicker">Pilar 01</div>
+        <div class="pillar-title">Estrategia Personalizada</div>
+        <p class="pillar-text">Adaptada a tu mercado local o nacional con objetivos reales, alineados con la capacidad de tu negocio y su proyección de crecimiento.</p>
+      </div>
+      <div class="pillar-item">
+        <div class="pillar-kicker">Pilar 02</div>
+        <div class="pillar-title">Transparencia Radical</div>
+        <p class="pillar-text">Reportes claros donde sabrás exactamente cuánto te cuesta captar cada cliente y qué acciones están generando resultados.</p>
+      </div>
+      <div class="pillar-item">
+        <div class="pillar-kicker">Pilar 03</div>
+        <div class="pillar-title">Comunicación Directa</div>
+        <p class="pillar-text">Sin intermediarios, sin esperas y sin burocracia. Hablas directamente con los expertos que gestionan tus campañas.</p>
+      </div>
+    </div>
     <div class="compare-wrap reveal">
       <table>
         <thead>
           <tr>
-            <th>Característica</th>
-            <th>Otras Agencias</th>
             <th>ME's Studio</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td>Especialización</td><td>Generalistas (hacen de todo)</td><td>✦ 100% Aluminio &amp; Cristal</td></tr>
-          <tr><td>Tipo de contactos</td><td>Leads fríos / Curiosos</td><td>✦ Cualificados con presupuesto real</td></tr>
-          <tr><td>Enfoque principal</td><td>Likes y seguidores</td><td>✦ Ventas y cierres</td></tr>
-          <tr><td>Reportes</td><td>Genéricos y confusos</td><td>✦ Claros — coste por cliente</td></tr>
-          <tr><td>Garantía</td><td>Ninguna</td><td>✦ Resultados o te devolvemos el dinero</td></tr>
+          <tr><td>✓ Garantía de éxito</td></tr>
+          <tr><td>✓ Cercanía</td></tr>
+          <tr><td>✓ Reportes</td></tr>
+          <tr><td>✓ Seguimiento</td></tr>
+          <tr><td>✓ Métricas, muchas métricas</td></tr>
+          <tr><td>✓ Control del proceso</td></tr>
+          <tr><td>✓ Menos estrés + seguridad</td></tr>
+          <tr><td>✓ Leads cualificados</td></tr>
         </tbody>
       </table>
     </div>
@@ -656,6 +841,12 @@
         <p>Te ayudamos a organizar y gestionar tus leads para que ninguna oportunidad de venta se pierda en el proceso.</p>
         <span class="service-tag">CRM Setup</span>
       </div>
+      <div class="service-card">
+        <span class="service-icon">💬</span>
+        <h3>Community Manager</h3>
+        <p>Construimos y gestionamos la presencia diaria de tu marca en redes sociales, generando conversación, confianza y comunidad alrededor de tu negocio.</p>
+        <span class="service-tag">Social Media</span>
+      </div>
     </div>
   </section>
 
@@ -664,9 +855,8 @@
     <div class="team-layout">
       <div class="team-text">
         <div class="section-label">El equipo</div>
-        <h2>Expertos en marketing para el sector <em>construcción</em></h2>
-        <p>En ME's Marketing Experts Studio no somos generalistas. Conocemos el sector de las reformas, el aluminio y la cristalería porque nos dedicamos exclusivamente a ello.</p>
-        <p>Entendemos lo que tus clientes buscan y sabemos cómo alcanzarlos antes que tu competencia.</p>
+        <h2>Expertos en marketing orientado al <em>crecimiento</em></h2>
+        <p>En ME's Marketing Experts Studio no somos generalistas. Diseñamos estrategias de marketing digital enfocadas en resultados reales para tu negocio.</p>
         <ul class="team-perks">
           <li>Estrategia personalizada adaptada a tu localidad en Málaga</li>
           <li>Reportes claros — sabrás exactamente cuánto te cuesta cada cliente</li>
@@ -676,13 +866,15 @@
       </div>
       <div class="reveal">
         <div class="team-cards">
-          <div class="team-card">
-            <div class="team-avatar-placeholder">👤</div>
+          <div class="team-card" data-member="ricardo">
+            <div class="team-avatar-placeholder">
+              <img src="assets/foto-ricardo.jpg" alt="Ricardo - ME's Marketing Experts Studio" />
+            </div>
             <div class="team-name">Ricardo Sanchez Iguacel</div>
             <div class="team-role">Meta Ads &amp; Marketing Orgánico</div>
           </div>
-          <div class="team-card">
-            <div class="team-avatar-placeholder">👤</div>
+          <div class="team-card team-card--diego" data-member="diego">
+            <div class="team-avatar-placeholder team-avatar--diego"></div>
             <div class="team-name">Diego Adrian Lara Alvarez</div>
             <div class="team-role">Filmaker &amp; Editor Profesional</div>
           </div>
@@ -695,12 +887,45 @@
     </div>
   </section>
 
+  <!-- TEAM MODALS -->
+  <div class="modal-overlay" id="modal-ricardo" aria-hidden="true">
+    <div class="modal-card">
+      <button class="modal-close" data-close-modal>&times;</button>
+      <div class="modal-title">Ricardo Sanchez Iguacel</div>
+      <div class="modal-subtitle">Director de Estrategia &amp; Meta Ads Specialist</div>
+      <div class="modal-body">
+        Especialista en convertir clics en clientes. Ricardo lidera el área de Paid Media, diseñando embudos de venta y campañas de publicidad digital optimizadas para el retorno de inversión (ROI). Su enfoque es analítico: si no se puede medir, no existe.
+      </div>
+      <ul class="modal-list">
+        <li>Gestión avanzada de Facebook &amp; Instagram Ads.</li>
+        <li>Diseño y optimización de embudos de venta.</li>
+        <li>Optimización de costes de adquisición (CPA).</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modal-diego" aria-hidden="true">
+    <div class="modal-card">
+      <button class="modal-close" data-close-modal>&times;</button>
+      <div class="modal-title">Diego Adrian Lara Alvarez</div>
+      <div class="modal-subtitle">Creative Director &amp; Professional Filmmaker</div>
+      <div class="modal-body">
+        La imagen es el primer punto de contacto con tu cliente. Diego se encarga de que ese impacto sea inolvidable. Como Filmmaker y Editor Profesional, eleva la percepción de valor de tu marca a través de contenido audiovisual con calidad cinematográfica.
+      </div>
+      <ul class="modal-list">
+        <li>Producción de vídeo para campañas publicitarias.</li>
+        <li>Contenido orgánico de alto impacto (Reels, TikTok, YouTube).</li>
+        <li>Storytelling visual adaptado a la identidad de tu negocio.</li>
+      </ul>
+    </div>
+  </div>
+
   <!-- CTA -->
   <section class="cta-section" id="contacto">
-    <h2>¿Listo para llenar tu agenda de <em>presupuestos?</em></h2>
+    <h2>¿Listo para llenar tu agenda?</h2>
     <p>Deja de depender del boca a boca. Toma el control del crecimiento de tu empresa hoy mismo.</p>
     <div class="cta-actions">
-      <a href="https://wa.me/34614851435" class="btn-primary">Quiero mi llamada gratuita →</a>
+      <a href="https://wa.me/34614851435" class="btn-primary">Agenda tu consultoria gratuita →</a>
     </div>
     <div class="cta-note">Respuesta en menos de 24h laborables · Sin compromiso</div>
   </section>
@@ -710,7 +935,7 @@
     <div class="footer-grid">
       <div class="footer-brand">
         <div style="font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:0.12em;color:var(--gold)">ME'S <span style="color:var(--white)">WEB</span></div>
-        <p>Expertos en marketing digital para empresas de reformas, aluminio y cristalería en Málaga.</p>
+        <p>Expertos en marketing digital y crecimiento para marcas que quieren más clientes y mejores resultados.</p>
       </div>
       <div class="footer-col">
         <h4>Contacto</h4>
@@ -780,6 +1005,40 @@
         links.style.display = 'none';
       }
     }
+
+    // Team modals
+    const ricardoCard = document.querySelector('.team-card[data-member="ricardo"]');
+    const diegoCard = document.querySelector('.team-card[data-member="diego"]');
+    const modalRicardo = document.getElementById('modal-ricardo');
+    const modalDiego = document.getElementById('modal-diego');
+
+    function openModal(modal) {
+      if (!modal) return;
+      modal.classList.add('active');
+      modal.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeModal(modal) {
+      if (!modal) return;
+      modal.classList.remove('active');
+      modal.setAttribute('aria-hidden', 'true');
+    }
+
+    ricardoCard?.addEventListener('click', () => openModal(modalRicardo));
+    diegoCard?.addEventListener('click', () => openModal(modalDiego));
+
+    document.querySelectorAll('[data-close-modal]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const overlay = btn.closest('.modal-overlay');
+        closeModal(overlay);
+      });
+    });
+
+    [modalRicardo, modalDiego].forEach(modal => {
+      modal?.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal(modal);
+      });
+    });
   </script>
 </body>
 </html>
